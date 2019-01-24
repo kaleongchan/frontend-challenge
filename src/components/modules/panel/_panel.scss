@@ -1,0 +1,35 @@
+// Panels
+//
+// .panel--light - Light version.
+//
+// Markup: panel.twig
+//
+// Style guide: 6.3
+
+$chroma: add-colors('primary', (
+  panel-default: 'grey-blue',
+  panel-light:  'grey-blue-light',
+  panel-text:     'blue-dark'
+));
+
+$panel-padding: 15px;
+
+.panel{
+  padding: $panel-padding;
+  background-color: color(panel-default);
+  border: 1px solid color(panel-default);
+
+  &--light{
+    background-color: color(panel-light);
+  }
+}
+
+.panel__title{
+  color: color(panel-text);
+  margin-top: 0;
+  @include typeset(xlarge-bold);
+}
+
+.panel__body{
+  color: color(panel-text);
+}
