@@ -1,0 +1,25 @@
+// Menu
+//
+// Markup: menu.twig
+//
+// Style guide: 6.6
+
+$chroma: add-colors('primary', (
+  link-color: 'blue'
+));
+
+.menu{
+  list-style: none;
+  margin: 0;
+  padding: 13px 0;
+}
+
+.menu__item{
+  display: inline-block;
+
+  a{
+    color: color(link-color);
+    text-decoration: none;
+    margin-right: $spacing-m;
+  }
+}

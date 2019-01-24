@@ -1,0 +1,14 @@
+// Banner
+//
+// Markup: banner.twig
+//
+// Style guide: 6.7
+$chroma: add-colors('primary', (
+    banner-text: 'blue',
+));
+
+.banner{
+  color: color(banner-text);
+  @include typeset(xxxlarge);
+  margin: $spacing-l 0;
+}

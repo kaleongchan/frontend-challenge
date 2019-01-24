@@ -1,0 +1,72 @@
+// Accordions
+//
+// .accordion--single - Open one item and collapse the others
+//
+// Markup: accordion.twig
+//
+// Style guide: 6.2
+
+$chroma: add-colors('primary', (
+  accordion-title-bg: 'grey-blue',
+  accordion-body-bg:  'grey-blue-light',
+  accordion-text:     'blue-dark'
+));
+
+$item-margin-bottom: $spacing-m;
+$title-padding: 15px;
+$body-padding: 15px;
+
+.accordion {
+  margin-bottom: -$item-margin-bottom;
+}
+
+.accordion__item {
+  border: 1px solid color(accordion-title-bg);
+  margin-bottom: $item-margin-bottom;
+}
+
+.accordion__title {
+  color: color(accordion-text);
+  cursor: pointer;
+  padding: $title-padding;
+  margin: 0;
+  // font-weight: bold;
+  @include typeset(xlarge-bold);
+  background-color: color(accordion-title-bg);
+  position: relative;
+
+  &:after {
+    content: ' ';
+    display: block;
+    background: url("/img/chevron-down.svg") no-repeat center;
+    width: 18px;
+    height: 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 10px;
+    margin: auto;
+  }
+
+  .accordion__item--opened &:after {
+    transform: rotate(180deg);
+  }
+}
+
+.accordion__body {
+  color: color(accordion-text);
+  background-color: color(accordion-body-bg);
+  height: auto;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height ease 300ms;
+
+  .accordion__item--opened & {
+    max-height: 500px;
+  }
+
+}
+
+.accordion__body__inner {
+  padding: $body-padding;
+}

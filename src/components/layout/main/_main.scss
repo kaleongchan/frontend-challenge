@@ -1,0 +1,53 @@
+// Main layout
+//
+// Markup: main.twig
+//
+// Style guide: 4.1
+.container{
+  display: grid;
+  grid-template-columns: 5% 24% $spacing-m auto $spacing-m auto $spacing-m 24% 5%;
+  grid-template-rows: 50px 300px auto;
+}
+
+.header__left{
+  grid-column-start: 2;
+  grid-column-end: 2;
+}
+
+.header__centre{
+  grid-column-start: 4;
+  grid-column-end: 7;
+}
+
+.header__right{
+  grid-column-start: 8;
+  grid-column-end: 9;
+  text-align: right;
+}
+
+.full-width{
+  grid-column-start: 2;
+  grid-column-end: 9;
+}
+
+.content__left{
+  grid-column-start: 2;
+  grid-column-end: 5;
+  margin-bottom: $spacing-m;
+}
+
+.content__right{
+  grid-column-start: 6;
+  grid-column-end: 9;
+  margin-bottom: $spacing-m;
+}
+
+.content__main{
+  grid-column-start: 2;
+  grid-column-end: 7;
+}
+
+.content__side{
+  grid-column-start: 8;
+  grid-column-end: 9;
+}

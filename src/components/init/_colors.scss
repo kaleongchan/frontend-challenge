@@ -15,6 +15,8 @@
 $chroma: define-default-color-scheme('Descriptive color names for use in "functional" color names below.');
 $chroma: add-colors((
   'white':                  #fff,
+  'grey-blue-light':        #f8fbff,
+  'grey-blue':              #e2eaf2,
   'grey-xxlight':           #fbfbfb,
   'grey-xlight':            #ececec,
   'grey-light':             #ccc,
@@ -23,6 +25,7 @@ $chroma: add-colors((
   'black':                  #111,
   'blue':                   #0074cb,
   'blue-mid':               #015ea4,
+  'blue-dark':              #415468
 ));
 
 // The primary color scheme provides components with colors.

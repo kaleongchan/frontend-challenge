@@ -18,6 +18,8 @@ import autoprefixer from 'gulp-autoprefixer';
 import size from 'gulp-size';
 import sassLint from 'gulp-sass-lint';
 import eslint from 'gulp-eslint';
+import babel from 'gulp-babel';
+import svgo from 'gulp-svgo';
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
 import kss from 'kss';
@@ -48,7 +50,13 @@ let sassFiles = [
   '!' + config.sass.src + '/**/_*.scss',
   // Ignore styleguide sass files.
   '!' + config.sass.src + '/style-guide/**/*.scss',
-]
+];
+
+// The js files we are compiling.
+let jsFiles = [
+  config.js.src + '/**/*.js'
+];
+
 
 // Define the globs to clean (or leave alone).
 let cleanFiles = {
@@ -57,6 +65,10 @@ let cleanFiles = {
     config.sass.dest + '/**/*.map',
     // Don't delete styleguide css files as these are handled by the styleguide cleaner.
     '!' + config.sass.dest + '/style-guide/**/*.css'
+  ],
+
+  js: [
+    config.js.dest + '/**/*.js'
   ],
 
   styleguide: [
@@ -198,6 +210,16 @@ cleanCss.description = 'Clean the SASS destination directory.';
 gulp.task('clean:css', cleanCss);
 
 /**
+ * Clean the js destination directory.
+ */
+const cleanJs = function() {
+  return del(cleanFiles.js, { force: true });
+};
+
+cleanJs.description = 'Clean the js destination directory.';
+gulp.task('clean:js', cleanJs);
+
+/**
  * Clean the styleguide directory and remove any related styleguide files.
  */
 const cleanStyleguide = function() {
@@ -240,6 +262,31 @@ stylesProd.description = 'Outputs CSS ready for production.';
 gulp.task('styles:production', gulp.series('clean:css', stylesProd));
 
 /**
+ * Output JS.
+ */
+const jsDev = function() {
+  return gulp.src(jsFiles)
+    .pipe(babel({presets: ['es2015']}))
+    .pipe(gulp.dest(config.js.dest));
+};
+
+jsDev.description = 'Output js for development use only.';
+gulp.task('js:development', gulp.series('clean:js', jsDev));
+
+/**
+ * Optimise SVG.
+ */
+const svgOptimise = function() {
+  return gulp.src(config.svg.src)
+    .pipe(svgo())
+    .pipe(gulp.dest(config.svg.dest));
+};
+
+svgOptimise.description = 'Output optimised SVG files.';
+gulp.task('svg:optimise', svgOptimise);
+
+
+/**
  * Outputs Styleguide CSS.
  */
 const kssStyles = function() {
@@ -280,7 +327,7 @@ gulp.task('styleguide:build', kssBuild);
 /**
  * Run all styleguide tasks in the correct order.
  */
-const styleguide = gulp.series('clean:styleguide', 'styleguide:chroma-kss-markup', gulp.parallel('styleguide:styles', 'styleguide:build'));
+const styleguide = gulp.series('clean:styleguide', 'styleguide:chroma-kss-markup', gulp.parallel('styleguide:styles', 'styleguide:build'), 'svg:optimise');
 styleguide.description = 'Builds the style guide and compiles sass/styleguide and Chroma markup.';
 gulp.task('styleguide', styleguide);
 
@@ -307,7 +354,7 @@ gulp.task('watch:sass', watchSass);
  * Reload browserSync automatically after a change to a js file.
  */
 const watchJs = function(e) {
-  gulp.watch(watchFiles.js, watchOptions, gulp.series('lint:js', 'browsersync:reload'));
+  gulp.watch(watchFiles.js, watchOptions, gulp.series('lint:js', 'js:development', 'browsersync:reload'));
 };
 
 watchJs.description = 'Watch js files and lint them.';
@@ -328,7 +375,7 @@ gulp.task('watch:styleguide', watchStyleguide);
 /**
  * Watch all.
  */
-const watch = gulp.series('styles:development', 'styleguide', 'browsersync:init', 'lint', gulp.parallel('watch:sass', 'watch:js', 'watch:styleguide'));
+const watch = gulp.series('styles:development', 'js:development', 'styleguide', 'browsersync:init', 'lint', gulp.parallel('watch:sass', 'watch:js', 'watch:styleguide'));
 watch.description = 'Watch styles, js and styleguide files and rebuild as needed on change.';
 gulp.task('watch', watch);
 

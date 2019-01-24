@@ -1,0 +1,43 @@
+// Search
+//
+// Markup: search.twig
+//
+// Style guide: 6.4
+
+$chroma: add-colors('primary', (
+  input-bg: 'grey-xxlight'
+));
+
+$padding: 15px 18px;
+$icon-size: 40px;
+$input-width: 300px;
+
+.search{
+  display: inline-block;
+  position: relative;
+
+}
+
+.search__input{
+  border: none;
+  border-radius: $border-radius;
+  background-color: color(input-bg);
+  padding: $padding;
+  padding-right: $icon-size;
+  width: $input-width;
+}
+
+.search__button{
+  display: block;
+  color: transparent;
+  border: none;
+  width: $icon-size;
+  height: 100%;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  right: 0;
+
+  background: url("/img/search.svg") no-repeat center;
+}
